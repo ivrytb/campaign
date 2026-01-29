@@ -32,7 +32,7 @@ module.exports = async (req, res) => {
                 const hours = Math.floor((diffInMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                 const minutes = Math.floor((diffInMs % (1000 * 60 * 60)) / (1000 * 60));
                 
-                timeText = ` לְסִיּוּם הַקַּמְפֵּין נָשְׁאֲרוּ: `;
+                timeText = ` לְסִיּוּם הַקַּמְפֵּין נָשְׁאֲרוּ, `;
                 if (days > 0) timeText += `${days} יָמִים, `;
                 if (hours > 0) timeText += `${hours} שָׁעוֹת, `;
                 timeText += `וְ-${minutes} דַּקּוֹת.`;
