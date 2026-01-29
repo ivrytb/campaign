@@ -35,7 +35,7 @@ module.exports = async (req, res) => {
                 timeText = ` לְסִיּוּם הַקַּמְפֵּין נָשְׁאֲרוּ, `;
                 if (days > 0) timeText += `${days} יָמִים, `;
                 if (hours > 0) timeText += `${hours} שָׁעוֹת, `;
-                timeText += `וְ-${minutes} דַּקּוֹת.`;
+                timeText += `וְ-${minutes} דַּקּוֹת`;
             } else {
                 timeText = " הַקַּמְפֵּין הִסְתַּיֵּים.";
             }
@@ -46,7 +46,7 @@ module.exports = async (req, res) => {
     }
 
     // בניית המשפט הסופי
-    const textToSay = `עַד כֹּה נֶאֶסְפוּ ${percent} אֲחוּזִים, שֶׁהֵם ${totalIncome} שְׁקָלִים, בְּאֶמְצָעוּת ${donors} תּוֹרְמִים,, ${timeText}`;
+    const textToSay = `עַד כֹּה נֶאֶסְפוּ ${percent} אֲחוּזִים, שֶׁהֵם ${totalIncome} שְׁקָלִים, בְּאֶמְצָעוּת ${donors} תּוֹרְמִים, ${timeText}`;
 
     const message = `id_list_message=t-${textToSay}`;
 
