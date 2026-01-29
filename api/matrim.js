@@ -24,7 +24,7 @@ module.exports = async (req, res) => {
 
         // 2. כניסה ראשונה (שנייה אחרי יעד כללי)
         if (apiData === '' && step === "0") {
-            const welcomeMsg = "אָנָּא, הַקִּישׁוּ אֶת מִסְפַּר הַמַּתְּרִים שֶׁל נְדָרִים פְּלוּס, וּלְסִיּוּם הִקִּישׁוּ סֻלָּמִית, לַחֲזָרָה לַתַּפְרִיט הָרָאשִׁי הַקִּישׁוּ כּוֹכָבִית וְסֻלָּמִית";
+            const welcomeMsg = "אָנָּא, הַקִּישׁוּ אֶת מִסְפַּר הַמַּתְּרִים שֶׁל נדרים פְּלוּס, וּלְסִיּוּם הִקִּישׁוּ סולמית, לַחֲזָרָה לַתַּפְרִיט הראשי הַקִּישׁוּ כּוֹכָבִית וְסולמית";
             res.setHeader('Content-Type', 'text/plain; charset=utf-8');
             return res.send(`read=t-${welcomeMsg}=${readSettings}&api_link_append=step=1`);
         }
@@ -32,7 +32,7 @@ module.exports = async (req, res) => {
         // 3. טיפול בשתיקה
         if (apiData === '') {
             if (step === "2") return res.send(`go_to_folder=..`);
-            const reminder = "הַמַּעֲרֶכֶת מַמְתִּינָה לְמִסְפַּר מַּתְּרִים, אוֹ כּוֹכָבִית וְסֻלָּמִית לַחֲזָרָה";
+            const reminder = "הַמַּעֲרֶכֶת מַמְתִּינָה לְמִסְפַּר מַּתְּרִים, אוֹ כּוֹכָבִית וְסולמית לתפריט ראשי";
             return res.send(`read=t-${reminder}=${readSettings}&api_link_append=step=2`);
         }
 
@@ -57,7 +57,7 @@ module.exports = async (req, res) => {
         const percent = goal > 0 ? Math.floor((total / goal) * 100) : 0;
 
         const info = `${name}, השיג ${percent} אחוז מהיעד, והתרים ${total} שקלים, מתוך ${goal} שקלים, באמצעות ${donors} תורמים`;
-        const footer = "לבחירת מתרים אחר, הקישו את המספר וסולמית, או כוכבית וסולמית לחזרה,";
+        const footer = "לבחירת מתרים אחר, הקישו את המספר וסולמית, או כוכבית וסולמית לתפריט הראשי ,,";
 
         res.setHeader('Content-Type', 'text/plain; charset=utf-8');
         return res.send(`read=t-${info} ${footer}=${readSettings}&api_link_append=step=1`);
