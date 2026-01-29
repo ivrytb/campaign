@@ -46,7 +46,7 @@ module.exports = async (req, res) => {
     }
 
     // בניית המשפט הסופי
-    const textToSay = `עַד כֹּה נֶאֶסְפוּ ${percent} אֲחוּזִים, שֶׁהֵם ${totalIncome} שְׁקָלִים, בְּאֶמְצָעוּת ${donors} תּוֹרְמִים. ${timeText}`;
+    const textToSay = `עַד כֹּה נֶאֶסְפוּ ${percent} אֲחוּזִים, שֶׁהֵם ${totalIncome} שְׁקָלִים, בְּאֶמְצָעוּת ${donors} תּוֹרְמִים,, ${timeText}`;
 
     const message = `id_list_message=t-${textToSay}`;
 
