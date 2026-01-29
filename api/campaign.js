@@ -13,7 +13,7 @@ module.exports = async (req, res) => {
     const donors = data.donorscount;
     const percent = Math.floor((totalIncome / goal) * 100);
 
-    const part1 = `עַד כֹּה נֶאֶסְפוּ ${percent} אֲחוּזִים, שֶׁהֵם ${totalIncome} שְׁקָלִים, בְּאֶמְצָעוּת ${donors} תּוֹרְמִים`;
+    const part1 = `עַד כֹּה נֶאֶסְפוּ ${percent} אֲחוּזִים, שֶׁהֵם ${totalIncome} שְׁקָלִים, בְּאֶמְצָעוּת ${donors} תּוֹרמִים`;
 
     // 2. נתוני זמן מ-Give עם "זהות" של דפדפן
     let part2 = "";
@@ -36,7 +36,7 @@ module.exports = async (req, res) => {
         }
     } catch (e) {
         // אם ה-API נכשל, נוסיף הודעה קטנה כדי שנדע שזה הגיע לכאן (רק לבדיקה)
-         part2 = "זמן לא זמין"; 
+        // part2 = "זמן לא זמין"; 
     }
 
     res.setHeader('Content-Type', 'text/plain; charset=utf-8');
