@@ -24,7 +24,7 @@ module.exports = async (req, res) => {
 
         // 2. כניסה ראשונה (שנייה אחרי יעד כללי)
         if (apiData === '' && step === "0") {
-            const welcomeMsg = "אָנָּא, הַקִּישׁוּ אֶת מִסְפַּר הַמַּתְרִים שֶׁל נְדָרִים פְּלוּס, וּלְסִיּוּם הִקִּישׁוּ סֻלָּמִית, לַחֲזָרָה לַתַּפְרִיט הָרָאשִׁי הַקִּישׁוּ כּוֹכָבִית";
+            const welcomeMsg = "אָנָּא, הַקִּישׁוּ אֶת מִסְפַּר הַמַּתְּרִים שֶׁל נְדָרִים פְּלוּס, וּלְסִיּוּם הִקִּישׁוּ סֻלָּמִית, לַחֲזָרָה לַתַּפְרִיט הָרָאשִׁי הַקִּישׁוּ כּוֹכָבִית וְסֻלָּמִית";
             res.setHeader('Content-Type', 'text/plain; charset=utf-8');
             return res.send(`read=t-${welcomeMsg}=${readSettings}&api_link_append=step=1`);
         }
@@ -32,7 +32,7 @@ module.exports = async (req, res) => {
         // 3. טיפול בשתיקה
         if (apiData === '') {
             if (step === "2") return res.send(`go_to_folder=..`);
-            const reminder = "המערכת ממתינה למספר מתרים או כוכבית לחזרה";
+            const reminder = "הַמַּעֲרֶכֶת מַמְתִּינָה לְמִסְפַּר מַּתְּרִים, אוֹ כּוֹכָבִית וְסֻלָּמִית לַחֲזָרָה";
             return res.send(`read=t-${reminder}=${readSettings}&api_link_append=step=2`);
         }
 
@@ -45,7 +45,7 @@ module.exports = async (req, res) => {
         const matrim = response.data.find(m => m.Id.toString().trim() === cleanData);
 
         if (!matrim) {
-            const errorMsg = `מתרים מספר ${cleanData} לא נמצא נא הקישו שוב מספר מתרים וסולמית`;
+            const errorMsg = `מַּתְּרִים מספר ${cleanData} לא נמצא, נא הקישו שוב מספר מתרים וסולמית`;
             return res.send(`read=t-${errorMsg}=${readSettings}&api_link_append=step=1`);
         }
 
@@ -56,8 +56,8 @@ module.exports = async (req, res) => {
         const goal = parseInt(matrim.Goal);
         const percent = goal > 0 ? Math.floor((total / goal) * 100) : 0;
 
-        const info = `${name} השיג ${percent} אחוז מהיעד והתרים ${total} שקלים באמצעות ${donors} תורמים`;
-        const footer = "לבחירת מתרים אחר הקישו את המספר וסולמית או כוכבית לחזרה";
+        const info = `${name}, השיג ${percent} אחוז מהיעד, והתרים ${total} שקלים, מתוך ${goal} שקלים, באמצעות ${donors} תורמים`;
+        const footer = "לבחירת מתרים אחר, הקישו את המספר וסולמית, או כוכבית וסולמית לחזרה";
 
         res.setHeader('Content-Type', 'text/plain; charset=utf-8');
         return res.send(`read=t-${info} ${footer}=${readSettings}&api_link_append=step=1`);
