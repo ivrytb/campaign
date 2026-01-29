@@ -27,12 +27,12 @@ module.exports = async (req, res) => {
         const minutes = totalMinutes % 60;
         
         // בניית טקסט הזמן ללא נקודות
-        timeText = ` ,, וּלְסִיּוּם הַקַּמְפֵּין נָשְׁאֲרוּ ${days} ,יָמִים ${hours} שָׁעוֹת וְ ${minutes} דקות.`;
+        timeText = ` ,, וּלְסִיּוּם הַקַּמְפֵּין נָשְׁאֲרוּ ${days} יָמִים ${hours} שָׁעוֹת וְ ${minutes} דקות.`;
     }
 
     // 3. בניית משפט אחד ארוך - ללא נקודות בתוך ה-t
     // השתמשתי בפסיקים בלבד להפסקות דיבור
-    const finalSentence = `עַד כֹּה נֶאֶסְפוּ ${percent} אֲחוּזִים, שֶׁהֵם ${totalIncome} שְׁקָלִים, בְּאֶמְצָעוּת ${donors} תּוֹרְמִים${timeText}`;
+    const finalSentence = `עַד כֹּה נֶאֶסְפוּ ${percent} אֲחוּזִים, שֶׁהֵם ${totalIncome} שְׁקָלִים, בְּאֶמְצָעוּת ${donors} תורמים${timeText}`;
 
     res.setHeader('Content-Type', 'text/plain; charset=utf-8');
     
