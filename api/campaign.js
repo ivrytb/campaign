@@ -31,7 +31,7 @@ module.exports = async (req, res) => {
     }
 
     // בניית המשפט עם היתרה ליעד
-    const finalSentence = `עַד כֹּה נתרמו ${percent} אֲחוּזִים, שֶׁהֵם ${totalIncome} שְׁקָלִים, בְּאֶמְצָעוּת ${donors} ,תורמים , נָשְׁאֲרוּ עוֹד ${missingAmount} שְׁקָלִים לַיַּעַד הסופי ${timeText}`;
+    const finalSentence = `עַד כֹּה נתרמו ${percent} אֲחוּזִים, שֶׁהֵם ${totalIncome} שְׁקָלִים, בְּאֶמְצָעוּת ${donors} תורמים, ,  נָשְׁאֲרוּ עוֹד ${missingAmount} שְׁקָלִים לַיַּעַד הסופי ${timeText}`;
 
     res.setHeader('Content-Type', 'text/plain; charset=utf-8');
     return res.send(`id_list_message=t-${finalSentence}`);
