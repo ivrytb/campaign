@@ -27,11 +27,11 @@ module.exports = async (req, res) => {
         const minutes = totalMinutes % 60;
         
         // שימוש בפסיקים כפולים להפסקה נעימה לפני הזמן
-        timeText = ` ,, וּלְסִיּוּם הַקַּמְפֵּין נָשְׁאֲרוּ ${days} יָמִים, ${hours} שָׁעוֹת, וְ ${minutes} דַּקּוֹת.`;
+        timeText = ` ,, וּלְסִיּוּם הקמפיין נָשְׁאֲרוּ ${days} יָמִים, ${hours} שָׁעוֹת, וְ ${minutes} דקות.`;
     }
 
     // בניית המשפט עם היתרה ליעד
-    const finalSentence = `עַד כֹּה נֶאֶסְפוּ ${percent} אֲחוּזִים, שֶׁהֵם ${totalIncome} שְׁקָלִים, בְּאֶמְצָעוּת ${donors} תּוֹרְמִים , נָשְׁאֲרוּ עוֹד ${missingAmount} שְׁקָלִים לַיַּעַד ${timeText}`;
+    const finalSentence = `עַד כֹּה נתרמו ${percent} אֲחוּזִים, שֶׁהֵם ${totalIncome} שְׁקָלִים, בְּאֶמְצָעוּת ${donors} ,תורמים , נָשְׁאֲרוּ עוֹד ${missingAmount} שְׁקָלִים לַיַּעַד הסופי ${timeText}`;
 
     res.setHeader('Content-Type', 'text/plain; charset=utf-8');
     return res.send(`id_list_message=t-${finalSentence}`);
