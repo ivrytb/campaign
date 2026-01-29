@@ -18,7 +18,7 @@ module.exports = async (req, res) => {
 
     // הפורמט הנכון לימות המשיח לפי הקישור ששלחת
     // אנחנו משתמשים ב-encodeURIComponent כדי שהעברית והרווחים יעברו תקין ב-URL
-    const message = `id_list_message=t-${textToSay}&api_link=https://campaign-wheat.vercel.app/api/matrim`;
+    const message = `id_list_message=t-${textToSay}`; // &api_link=https://campaign-wheat.vercel.app/api/matrim
 
     res.setHeader('Content-Type', 'text/plain; charset=utf-8');
     res.status(200).send(message);
