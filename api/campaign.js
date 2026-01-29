@@ -13,7 +13,7 @@ module.exports = async (req, res) => {
     const donors = data.donorscount;
     const percent = Math.floor((totalIncome / goal) * 100);
 
-    const part1 = `t-עַד כֹּה נֶאֶסְפוּ ${percent} אֲחוּזִים, שֶׁהֵם ${totalIncome} שְׁקָלִים, בְּאֶמְצָעוּת ${donors} תּוֹרְמִים`;
+    const part1 = `עַד כֹּה נֶאֶסְפוּ ${percent} אֲחוּזִים, שֶׁהֵם ${totalIncome} שְׁקָלִים, בְּאֶמְצָעוּת ${donors} תּוֹרְמִים`;
 
     // 2. נתוני זמן מ-Give עם "זהות" של דפדפן
     let part2 = "";
@@ -31,16 +31,16 @@ module.exports = async (req, res) => {
             if (diffInMs > 0) {
                 const hours = Math.floor(diffInMs / (1000 * 60 * 60));
                 const minutes = Math.floor((diffInMs % (1000 * 60 * 60)) / (1000 * 60));
-                part2 = `, לְסִיּוּם הַקַּמְפֵּין נָשְׁאֲרוּ ${hours} שָׁעוֹת, וְ ${minutes} דַּקּוֹת`;
+                part2 = `לְסִיּוּם הַקַּמְפֵּין נָשְׁאֲרוּ ${hours} שָׁעוֹת, וְ ${minutes} דַּקּוֹת`;
             }
         }
     } catch (e) {
         // אם ה-API נכשל, נוסיף הודעה קטנה כדי שנדע שזה הגיע לכאן (רק לבדיקה)
-        // part2 = ".t-זמן לא זמין"; 
+         part2 = ".t-זמן לא זמין"; 
     }
 
     res.setHeader('Content-Type', 'text/plain; charset=utf-8');
-    return res.send(`id_list_message=${part1}${part2}`);
+    return res.send(`id_list_message=t-${part1}.t-${part2}`);
 
   } catch (error) {
     return res.send("id_list_message=t-חלה שגיאה במשיכת הנתונים");
