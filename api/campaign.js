@@ -5,7 +5,6 @@ module.exports = async (req, res) => {
     const campaignId = process.env.CAMPAIGN_ID;
     const url = `https://www.liveraiser.co.il/api/getcampaigndetails?campaign_id=${campaignId}`;
 
-    // 1. נתוני קמפיין
     const response = await axios.get(url);
     const data = response.data;
     
@@ -13,9 +12,10 @@ module.exports = async (req, res) => {
     const totalIncome = Math.floor(parseFloat(data.totalincome)) || 0;
     const donors = data.donorscount || 0;
     const percent = Math.floor((totalIncome / goal) * 100);
+    const missingAmount = goal - totalIncome;
 
-    // 2. חישוב זמן ידני (מוודא שהמספרים נקיים)
-    const endDate = new Date("2026-02-08T22:00:00+02:00");
+    // חישוב זמן מדויק לפי האתר (סיום ב-08/02 ב-09:30 בבוקר)
+    const endDate = new Date("2026-02-08T09:30:00+02:00");
     const now = new Date();
     const diffInMs = endDate - now;
 
@@ -26,17 +26,14 @@ module.exports = async (req, res) => {
         const hours = Math.floor((totalMinutes % 1440) / 60);
         const minutes = totalMinutes % 60;
         
-        // בניית טקסט הזמן ללא נקודות
-        timeText = ` ,, וּלְסִיּוּם הַקַּמְפֵּין נָשְׁאֲרוּ ${days} יָמִים ${hours} שָׁעוֹת וְ ${minutes} דקות.`;
+        // שימוש בפסיקים כפולים להפסקה נעימה לפני הזמן
+        timeText = ` ,, וּלְסִיּוּם הַקַּמְפֵּין נָשְׁאֲרוּ ${days} יָמִים, ${hours} שָׁעוֹת, וְ ${minutes} דַּקּוֹת`;
     }
 
-    // 3. בניית משפט אחד ארוך - ללא נקודות בתוך ה-t
-    // השתמשתי בפסיקים בלבד להפסקות דיבור
-    const finalSentence = `עַד כֹּה נֶאֶסְפוּ ${percent} אֲחוּזִים, שֶׁהֵם ${totalIncome} שְׁקָלִים, בְּאֶמְצָעוּת ${donors} תורמים${timeText}`;
+    // בניית המשפט עם היתרה ליעד
+    const finalSentence = `עַד כֹּה נֶאֶסְפוּ ${percent} אֲחוּזִים, שֶׁהֵם ${totalIncome} שְׁקָלִים, בְּאֶמְצָעוּת ${donors} תּוֹרְמִים , נָשְׁאֲרוּ עוֹד ${missingAmount} שְׁקָלִים לַיַּעַד ${timeText}`;
 
     res.setHeader('Content-Type', 'text/plain; charset=utf-8');
-    
-    // שליחה כהודעה אחת רציפה - הכי בטוח בימות המשיח
     return res.send(`id_list_message=t-${finalSentence}`);
 
   } catch (error) {
