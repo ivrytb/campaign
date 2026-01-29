@@ -5,7 +5,7 @@ module.exports = async (req, res) => {
     const campaignId = process.env.CAMPAIGN_ID;
     const url = `https://www.liveraiser.co.il/api/getcampaigndetails?campaign_id=${campaignId}`;
 
-    // קריאת נתוני הקמפיין מ-LiveRaiser
+    // 1. קריאת נתוני הקמפיין מ-LiveRaiser
     const response = await axios.get(url);
     const data = response.data;
 
@@ -14,32 +14,38 @@ module.exports = async (req, res) => {
     const donors = data.donorscount;
     const percent = Math.floor((totalIncome / goal) * 100);
 
-    // --- תוספת חישוב הזמן מה-API של Give ---
+    // --- תוספת חישוב הזמן - גרסה מתוקנת ---
     let timeText = "";
     try {
-        const timeResponse = await axios.get('https://give.taharat.org/publicapi/campaigns/amirim?lang_code=he');
-        const campaignData = timeResponse.data.data;
-        const endDate = new Date(campaignData.end_date);
-        const now = new Date();
-        const diffInMs = endDate - now;
+        const timeResponse = await axios.get('https://give.taharat.org/publicapi/campaigns/amirim?lang_code=he', { timeout: 3000 });
+        
+        // וידוא נתיב הנתונים ב-JSON
+        const campaignData = timeResponse.data.data || timeResponse.data; 
+        
+        if (campaignData && campaignData.end_date) {
+            const endDate = new Date(campaignData.end_date);
+            const now = new Date();
+            const diffInMs = endDate - now;
 
-        if (diffInMs > 0) {
-            const days = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((diffInMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((diffInMs % (1000 * 60 * 60)) / (1000 * 60));
-            
-            timeText = ` לְסִיּוּם הַקַּמְפֵּין נָשְׁאֲרוּ: `;
-            if (days > 0) timeText += `${days} יָמִים, `;
-            if (hours > 0) timeText += `${hours} שָׁעוֹת, `;
-            timeText += `וְ-${minutes} דַּקּוֹת.`;
-        } else {
-            timeText = " הַקַּמְפֵּין הִסְתַּיֵּים.";
+            if (diffInMs > 0) {
+                const days = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diffInMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((diffInMs % (1000 * 60 * 60)) / (1000 * 60));
+                
+                timeText = ` לְסִיּוּם הַקַּמְפֵּין נָשְׁאֲרוּ: `;
+                if (days > 0) timeText += `${days} יָמִים, `;
+                if (hours > 0) timeText += `${hours} שָׁעוֹת, `;
+                timeText += `וְ-${minutes} דַּקּוֹת.`;
+            } else {
+                timeText = " הַקַּמְפֵּין הִסְתַּיֵּים.";
+            }
         }
     } catch (e) {
-        timeText = ""; // אם יש שגיאה ב-API של הזמן, פשוט לא נגיד כלום ונמשיך בנתונים הרגילים
+        console.error("Time API Error:", e.message);
+        timeText = ""; // אם נכשל, לפחות ישמעו את היעד הכללי
     }
 
-    // בניית המשפט המשולב (שומר על המבנה המקורי שלך + תוספת הזמן)
+    // בניית המשפט הסופי
     const textToSay = `עַד כֹּה נֶאֶסְפוּ ${percent} אֲחוּזִים, שֶׁהֵם ${totalIncome} שְׁקָלִים, בְּאֶמְצָעוּת ${donors} תּוֹרְמִים. ${timeText}`;
 
     const message = `id_list_message=t-${textToSay}`;
