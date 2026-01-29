@@ -9,7 +9,7 @@ module.exports = async (req, res) => {
     const data = response.data;
     
     // שליפת היעד מה-API
-    const goal = data.goal || 1000000; 
+    const goal = 1// data.goal || 1000000; 
     const totalIncome = Math.floor(parseFloat(data.totalincome)) || 0;
     const donors = data.donorscount || 0;
     const percent = Math.floor((totalIncome / goal) * 100);
