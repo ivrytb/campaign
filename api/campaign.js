@@ -14,11 +14,14 @@ module.exports = async (req, res) => {
     const donors = data.donorscount;
     const percent = Math.floor((totalIncome / goal) * 100);
 
-    // --- תוספת חישוב הזמן - ללא נקודות ---
-    let timeText = "";
+    // בניית החלק הראשון (ללא נקודות בפנים!)
+    const part1 = `t-עַד כֹּה נֶאֶסְפוּ ${percent} אֲחוּזִים שֶׁהֵם ${totalIncome} שְׁקָלִים בְּאֶמְצָעוּת ${donors} תּוֹרְמִים`;
+
+    // 2. חישוב הזמן מ-Give
+    let part2 = "";
     try {
         const timeResponse = await axios.get('https://give.taharat.org/publicapi/campaigns/amirim?lang_code=he', { timeout: 3000 });
-        const campaignData = timeResponse.data.data || timeResponse.data; 
+        const campaignData = timeResponse.data.data;
         
         if (campaignData && campaignData.end_date) {
             const endDate = new Date(campaignData.end_date);
@@ -30,25 +33,27 @@ module.exports = async (req, res) => {
                 const hours = Math.floor((diffInMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                 const minutes = Math.floor((diffInMs % (1000 * 60 * 60)) / (1000 * 60));
                 
-                timeText = ` לְסִיּוּם הַקַּמְפֵּין נָשְׁאֲרוּ `;
-                if (days > 0) timeText += `${days} יָמִים `;
-                if (hours > 0) timeText += `${hours} שָׁעוֹת `;
-                timeText += `וְ ${minutes} דַּקּוֹת`;
-            } else {
-                timeText = " הַקַּמְפֵּין הִסְתַּיֵּים";
+                let timeString = `לְסִיּוּם הַקַּמְפֵּין נָשְׁאֲרוּ `;
+                if (days > 0) timeString += `${days} יָמִים `;
+                if (hours > 0) timeString += `${hours} שָׁעוֹת `;
+                timeString += `וְ ${minutes} דַּקּוֹת`;
+                
+                part2 = `t-${timeString}`; // החלק השני מקבל t- משלו
             }
         }
     } catch (e) {
-        timeText = ""; 
+        part2 = ""; 
     }
 
-    // בניית המשפט ללא נקודות בכלל - רק פסיקים להפסקות
-    const textToSay = `עַד כֹּה נֶאֶסְפוּ ${percent} אֲחוּזִים שֶׁהֵם ${totalIncome} שְׁקָלִים בְּאֶמְצָעוּת ${donors} תּוֹרְמִים , ${timeText}`;
-
-    const message = `id_list_message=t-${textToSay}`;
+    // 3. החיבור הגורלי לפי התיעוד: id_list_message=t-חלק1.t-חלק2
+    // שימוש בנקודה כמפריד בין סוגי הודעות
+    let finalMessage = `id_list_message=${part1}`;
+    if (part2) {
+        finalMessage += `.${part2}`; 
+    }
 
     res.setHeader('Content-Type', 'text/plain; charset=utf-8');
-    res.status(200).send(message);
+    res.status(200).send(finalMessage);
 
   } catch (error) {
     res.status(200).send("id_list_message=t-חלה שגיאה במשיכת הנתונים");
