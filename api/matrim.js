@@ -1,57 +1,61 @@
 const axios = require('axios');
 
 module.exports = async (req, res) => {
-    // שליפת הנתונים שימות המשיח שולחים
     const apiData = req.query.ApiData || "";
-    // וודא שאנחנו מקבלים את ה-step מה-URL או מה-append
-    const step = req.query.step || "0"; 
+    const step = req.query.step || "0";
 
     try {
-        // הגדרות ה-Read שלך
+        // --- בניית המחרוזת המדויקת ---
+        // 1: ApiData
+        // 2: (ריק) - כדי שיקבל מחדש בכל פעם ולא ישרשר מספרים!
+        // 3: 7 (מקסימום)
+        // 4: (ריק - מינימום 1)
+        // 5: 7 (שניות המתנה)
+        // 6: NO (לא להשמיע את ההקשה)
+        // 7: (ריק - מאפשר כוכבית)
+        // ...
+        // 15: no (לא לבקש אישור הקשה)
         const readSettings = "ApiData,,7,,7,NO,,,,,,,,no";
 
-        // 1. כניסה ראשונה לשלוחה (step=0 ואין עדיין הקשה)
+        // 1. טיפול בחזרה (הקשת *)
+        if (apiData.includes('*')) {
+            return res.send(`go_to_folder=..`);
+        }
+
+        // 2. כניסה ראשונה (שנייה אחרי יעד כללי)
         if (apiData === '' && step === "0") {
-            const welcomeMsg = "נא הקישו את מספר המתרים מנדרים פלוס ולסיום הקישו סולמית לחזרה לתפריט הראשי הקישו כוכבית";
+            const welcomeMsg = "נא הקישו את מספר המתרים ולסיום סולמית לחזרה הקישו כוכבית";
             res.setHeader('Content-Type', 'text/plain; charset=utf-8');
             return res.send(`read=t-${welcomeMsg}=${readSettings}&api_link_append=step=1`);
         }
 
-        // 2. חזרה לשלוחת האב (הקשת *)
-        if (apiData === '*') {
-            return res.send(`go_to_folder=..`);
-        }
-
-        // 3. טיפול בשתיקה (המשתמש לא הקיש כלום ועברו 7 שניות)
+        // 3. טיפול בשתיקה
         if (apiData === '') {
-            if (step === "2") {
-                // שתיקה שנייה ברצף - חוזרים למעלה
-                return res.send(`go_to_folder=..`);
-            }
-            // שתיקה ראשונה - נותנים תזכורת
-            const reminder = "המערכת ממתינה להקשת מספר מתרים או כוכבית לחזרה";
-            res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+            if (step === "2") return res.send(`go_to_folder=..`);
+            const reminder = "המערכת ממתינה למספר מתרים או כוכבית לחזרה";
             return res.send(`read=t-${reminder}=${readSettings}&api_link_append=step=2`);
         }
 
-        // 4. חיפוש מתרים בנדרים פלוס
+        // 4. חיפוש מתרים
         const response = await axios.get('https://www.matara.pro/nedarimplus/V6/MatchPlus.aspx?Action=SearchMatrim&Name=&MosadId=7017016');
-        const matrim = response.data.find(m => m.Id.toString().trim() === apiData);
+        
+        // הגנה נוספת בקוד: לוקחים רק את המספר האחרון במחרוזת אם יש פסיקים
+        const cleanData = apiData.toString().split(',').pop().replace(/[^0-9]/g, '');
+
+        const matrim = response.data.find(m => m.Id.toString().trim() === cleanData);
 
         if (!matrim) {
-            const errorMsg = `מתרים מספר ${apiData} לא נמצא נא הקישו שוב מספר מתרים וסולמית`;
-            res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+            const errorMsg = `מתרים מספר ${cleanData} לא נמצא נא הקישו שוב מספר מתרים וסולמית`;
             return res.send(`read=t-${errorMsg}=${readSettings}&api_link_append=step=1`);
         }
 
-        // 5. נמצא מתרים - הכנת הודעה מפורטת
+        // 5. נמצא מתרים - הקראת נתונים
         let name = matrim.Name.replace(/[,"']/g, '').replace(/[^א-ת ]/g, '');
         const total = Math.floor(parseFloat(matrim.Cumule));
         const donors = matrim.Donator;
         const goal = parseInt(matrim.Goal);
         const percent = goal > 0 ? Math.floor((total / goal) * 100) : 0;
 
-        // בניית משפט ברור ללא פסיקים
         const info = `${name} השיג ${percent} אחוז מהיעד והתרים ${total} שקלים באמצעות ${donors} תורמים`;
         const footer = "לבחירת מתרים אחר הקישו את המספר וסולמית או כוכבית לחזרה";
 
@@ -59,6 +63,6 @@ module.exports = async (req, res) => {
         return res.send(`read=t-${info} ${footer}=${readSettings}&api_link_append=step=1`);
 
     } catch (error) {
-        return res.send(`id_list_message=t-חלה שגיאה במערכת&go_to_folder=..`);
+        return res.send(`id_list_message=t-חלה שגיאה&go_to_folder=..`);
     }
 };
