@@ -14,7 +14,7 @@ module.exports = async (req, res) => {
     const percent = Math.floor((totalIncome / goal) * 100);
 
     // בניית המשפט
-    const textToSay = `במבצע נאספו ${percent} אחוזים, שהם ${totalIncome} שקלים, באמצעות ${donors} תורמים`;
+    const textToSay = `עד כה נאספו ${percent} אחוזים, שהם ${totalIncome} שקלים, באמצעות ${donors} תורמים.`;
 
     // הפורמט הנכון לימות המשיח לפי הקישור ששלחת
     // אנחנו משתמשים ב-encodeURIComponent כדי שהעברית והרווחים יעברו תקין ב-URL
