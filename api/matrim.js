@@ -56,8 +56,8 @@ module.exports = async (req, res) => {
         const goal = parseInt(matrim.Goal);
         const percent = goal > 0 ? Math.floor((total / goal) * 100) : 0;
 
-        const info = `${name}, השיג ${percent} אחוז מהיעד, והתרים ${total} שקלים, מתוך ${goal} שקלים, באמצעות ${donors} תורמים`;
-        const footer = "לבחירת מתרים אחר, הקישו את המספר וסולמית, או כוכבית וסולמית לתפריט הראשי ,,";
+        const info = `${name}, השיג ${percent} אחוז מהיעד, וְהִתְרִים ${total} שקלים, מתוך ${goal} שקלים, באמצעות ${donors} תורמים`;
+        const footer = ",, לבחירת מתרים אחר, הקישו את המספר וסולמית, או כוכבית וסולמית לתפריט הראשי";
 
         res.setHeader('Content-Type', 'text/plain; charset=utf-8');
         return res.send(`read=t-${info} ${footer}=${readSettings}&api_link_append=step=1`);
