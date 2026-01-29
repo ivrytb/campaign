@@ -36,7 +36,7 @@ module.exports = async (req, res) => {
         }
     } catch (e) {
         // אם ה-API נכשל, נוסיף הודעה קטנה כדי שנדע שזה הגיע לכאן (רק לבדיקה)
-         part2 = ".t-זמן לא זמין"; 
+         part2 = "זמן לא זמין"; 
     }
 
     res.setHeader('Content-Type', 'text/plain; charset=utf-8');
