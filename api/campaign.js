@@ -31,7 +31,7 @@ module.exports = async (req, res) => {
             if (diffInMs > 0) {
                 const hours = Math.floor(diffInMs / (1000 * 60 * 60));
                 const minutes = Math.floor((diffInMs % (1000 * 60 * 60)) / (1000 * 60));
-                part2 = `.t-לְסִיּוּם הַקַּמְפֵּין נָשְׁאֲרוּ ${hours} שָׁעוֹת, וְ ${minutes} דַּקּוֹת`;
+                part2 = `, לְסִיּוּם הַקַּמְפֵּין נָשְׁאֲרוּ ${hours} שָׁעוֹת, וְ ${minutes} דַּקּוֹת`;
             }
         }
     } catch (e) {
