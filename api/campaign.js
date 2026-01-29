@@ -8,7 +8,7 @@ module.exports = async (req, res) => {
     const response = await axios.get(url);
     const data = response.data;
     
-    const goal = data.goal || 0; // 1000000
+    const goal =  1000000;
     const totalIncome = Math.floor(parseFloat(data.totalincome)) || 0;
     const donors = data.donorscount || 0;
     const percent = Math.floor((totalIncome / goal) * 100);
