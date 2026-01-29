@@ -15,7 +15,7 @@ module.exports = async (req, res) => {
         // 7: (ריק - מאפשר כוכבית)
         // ...
         // 15: no (לא לבקש אישור הקשה)
-        const readSettings = "ApiData,,7,,7,Number,,,,,,,,,no";
+        const readSettings = "ApiData,,7,,7,NO,,,,,,,,,no";
 
         // 1. טיפול בחזרה (הקשת *)
         if (apiData.includes('*')) {
