@@ -14,12 +14,10 @@ module.exports = async (req, res) => {
     const donors = data.donorscount;
     const percent = Math.floor((totalIncome / goal) * 100);
 
-    // --- תוספת חישוב הזמן - גרסה מתוקנת ---
+    // --- תוספת חישוב הזמן - ללא נקודות ---
     let timeText = "";
     try {
         const timeResponse = await axios.get('https://give.taharat.org/publicapi/campaigns/amirim?lang_code=he', { timeout: 3000 });
-        
-        // וידוא נתיב הנתונים ב-JSON
         const campaignData = timeResponse.data.data || timeResponse.data; 
         
         if (campaignData && campaignData.end_date) {
@@ -32,21 +30,20 @@ module.exports = async (req, res) => {
                 const hours = Math.floor((diffInMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                 const minutes = Math.floor((diffInMs % (1000 * 60 * 60)) / (1000 * 60));
                 
-                timeText = ` לְסִיּוּם הַקַּמְפֵּין נָשְׁאֲרוּ, `;
-                if (days > 0) timeText += `${days} יָמִים, `;
-                if (hours > 0) timeText += `${hours} שָׁעוֹת, `;
-                timeText += `וְ-${minutes} דַּקּוֹת`;
+                timeText = ` לְסִיּוּם הַקַּמְפֵּין נָשְׁאֲרוּ `;
+                if (days > 0) timeText += `${days} יָמִים `;
+                if (hours > 0) timeText += `${hours} שָׁעוֹת `;
+                timeText += `וְ ${minutes} דַּקּוֹת`;
             } else {
-                timeText = " הַקַּמְפֵּין הִסְתַּיֵּים.";
+                timeText = " הַקַּמְפֵּין הִסְתַּיֵּים";
             }
         }
     } catch (e) {
-        console.error("Time API Error:", e.message);
-        timeText = ""; // אם נכשל, לפחות ישמעו את היעד הכללי
+        timeText = ""; 
     }
 
-    // בניית המשפט הסופי
-    const textToSay = `עַד כֹּה נֶאֶסְפוּ ${percent} אֲחוּזִים, שֶׁהֵם ${totalIncome} שְׁקָלִים, בְּאֶמְצָעוּת ${donors} תּוֹרְמִים, ${timeText}`;
+    // בניית המשפט ללא נקודות בכלל - רק פסיקים להפסקות
+    const textToSay = `עַד כֹּה נֶאֶסְפוּ ${percent} אֲחוּזִים שֶׁהֵם ${totalIncome} שְׁקָלִים בְּאֶמְצָעוּת ${donors} תּוֹרְמִים , ${timeText}`;
 
     const message = `id_list_message=t-${textToSay}`;
 
