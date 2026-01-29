@@ -11,11 +11,11 @@ module.exports = async (req, res) => {
         // 3: 7 (מקסימום)
         // 4: (ריק - מינימום 1)
         // 5: 7 (שניות המתנה)
-        // 6: NO (לא להשמיע את ההקשה)
+        // 6: Number (להשמיע בתורת מספר)
         // 7: (ריק - מאפשר כוכבית)
         // ...
         // 15: no (לא לבקש אישור הקשה)
-        const readSettings = "ApiData,,7,,7,NO,,,,,,,,no";
+        const readSettings = "ApiData,,7,,7,Number,,,,,,,,,no";
 
         // 1. טיפול בחזרה (הקשת *)
         if (apiData.includes('*')) {
@@ -24,7 +24,7 @@ module.exports = async (req, res) => {
 
         // 2. כניסה ראשונה (שנייה אחרי יעד כללי)
         if (apiData === '' && step === "0") {
-            const welcomeMsg = "נא הקישו את מספר המתרים ולסיום סולמית לחזרה הקישו כוכבית";
+            const welcomeMsg = "אָנָּא, הַקִּישׁוּ אֶת מִסְפַּר הַמַּתְרִים שֶׁל נְדָרִים פְּלוּס, וּלְסִיּוּם הִקִּישׁוּ סֻלָּמִית, לַחֲזָרָה לַתַּפְרִיט הָרָאשִׁי הַקִּישׁוּ כּוֹכָבִית";
             res.setHeader('Content-Type', 'text/plain; charset=utf-8');
             return res.send(`read=t-${welcomeMsg}=${readSettings}&api_link_append=step=1`);
         }
