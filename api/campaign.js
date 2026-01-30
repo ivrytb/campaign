@@ -8,7 +8,7 @@ module.exports = async (req, res) => {
     const response = await axios.get(url);
     const data = response.data;
     
-    const goal = 1 // data.goal || 1000000;
+    const goal =  data.goal || 1000000;
     const totalIncome = Math.floor(parseFloat(data.totalincome)) || 0;
     const donors = data.donorscount || 0;
     const percent = Math.floor((totalIncome / goal) * 100);
@@ -22,7 +22,7 @@ module.exports = async (req, res) => {
     }
 
     // --- 2. לוגיקת עידוד לפי זמן (דחיפה להתרים עוד) ---
-    const endDate = new Date(new Date().getTime() + 2 * 60 * 60 * 1000) // new Date("2026-02-08T09:30:00+02:00");
+    const endDate =  new Date("2026-02-08T09:30:00+02:00"); // new Date(new Date().getTime() + 2 * 60 * 60 * 1000)
     const now = new Date();
     const diffInMs = endDate - now;
     const diffInHours = diffInMs / (1000 * 60 * 60);
