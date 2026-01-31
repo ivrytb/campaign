@@ -23,14 +23,21 @@ module.exports = async (req, res) => {
     }
 
     // --- 2. בחירת הודעת עידוד זמן (לפי הדחיפות) ---
+        // --- שנה רק את המספרים האלו ---
     const year = 2026;
-    const month = 2; // 2 זה פברואר
+    const month = 2;   // פברואר
     const day = 8;
-    const hour = 7;
-    const minute = 32;
+    const hour = 9;
+    const minute = 30;
+    
+    // הקוד הזה לוקח את המספרים שלך והופך אותם לפורמט ש-Vercel יבין כזמן ישראל
+    // הוא יוצר טקסט בסגנון: "2026-02-08T09:30:00+02:00"
+    const pad = (n) => n.toString().padStart(2, '0'); 
+    const dateString = `${year}-${pad(month)}-${pad(day)}T${pad(hour)}:${pad(minute)}:00+02:00`;
+    const endDate = new Date(dateString);
     
     // יצירת תאריך הסיום (זמן ישראל)
-    const endDate = new Date(year, month - 1, day, hour, minute);
+    // const endDate = new Date(year, month - 1, day, hour, minute);
     //const endDate =  new Date("2026-02-08T09:33:00+02:00");
     const diffInMs = endDate - new Date();
     const diffInHours = diffInMs / (1000 * 60 * 60);
