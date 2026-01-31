@@ -26,7 +26,7 @@ module.exports = async (req, res) => {
     const year = 2026;
     const month = 2; // 2 זה פברואר
     const day = 8;
-    const hour = 6;
+    const hour = 7;
     const minute = 32;
     
     // יצירת תאריך הסיום (זמן ישראל)
