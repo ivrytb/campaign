@@ -28,7 +28,7 @@ module.exports = async (req, res) => {
     const month = 2;   // פברואר
     const day = 8;
     const hour = 9;
-    const minute = 30;
+    const minute = 32;
     
     // הקוד הזה לוקח את המספרים שלך והופך אותם לפורמט ש-Vercel יבין כזמן ישראל
     // הוא יוצר טקסט בסגנון: "2026-02-08T09:30:00+02:00"
