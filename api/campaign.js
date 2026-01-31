@@ -23,7 +23,15 @@ module.exports = async (req, res) => {
     }
 
     // --- 2. בחירת הודעת עידוד זמן (לפי הדחיפות) ---
-    const endDate =  new Date("2026-02-08T09:33:00+02:00");
+    const year = 2026;
+    const month = 2; // 2 זה פברואר
+    const day = 8;
+    const hour = 9;
+    const minute = 32;
+    
+    // יצירת תאריך הסיום (זמן ישראל)
+    const endDate = new Date(year, month - 1, day, hour, minute);
+    //const endDate =  new Date("2026-02-08T09:33:00+02:00");
     const diffInMs = endDate - new Date();
     const diffInHours = diffInMs / (1000 * 60 * 60);
     
