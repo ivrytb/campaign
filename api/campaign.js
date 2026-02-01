@@ -18,7 +18,7 @@ module.exports = async (req, res) => {
     let encouragement = "";
     if (percent >= 90 && percent < 100) {
         encouragement = ".f-011"; // גיוואלד
-    } else if (percent >= 85 && percent < 90) {
+    } else if (percent >= 80 && percent < 90) {
         encouragement = ".f-010"; // קרובים ליעד
     }
 
