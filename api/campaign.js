@@ -3,7 +3,7 @@ const axios = require('axios');
 module.exports = async (req, res) => {
   try {
     const campaignId = process.env.CAMPAIGN_ID;
-    const url = `https://www.liveraiser.co.il/api/getcampaigndetails8888?campaign_id=${campaignId}`;
+    const url = `https://www.liveraiser.co.il/api/getcampaigndetails?campaign_id=${campaignId}`;
 
     const response = await axios.get(url);
     const data = response.data;
@@ -14,7 +14,7 @@ module.exports = async (req, res) => {
     const percent = Math.floor((totalIncome / goal) * 100);
 
     // הגדרות זמן סיום
-    const year = 2026, month = 2, day = 5, hour = 9, minute = 32;
+    const year = 2026, month = 2, day = 8, hour = 9, minute = 32;
     const pad = (n) => n.toString().padStart(2, '0'); 
     const dateString = `${year}-${pad(month)}-${pad(day)}T${pad(hour)}:${pad(minute)}:00+02:00`;
     const endDate = new Date(dateString);
