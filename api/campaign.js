@@ -9,12 +9,12 @@ module.exports = async (req, res) => {
     const data = response.data;
     
     const goal = data.goal || 1000000;
-    const totalIncome = 950000 //Math.floor(parseFloat(data.totalincome)) || 0;
+    const totalIncome = 1100000 //Math.floor(parseFloat(data.totalincome)) || 0;
     const donors = data.donorscount || 0;
     const percent = Math.floor((totalIncome / goal) * 100);
 
     // הגדרות זמן סיום
-    const year = 2026, month = 2, day = 2, hour = 5, minute = 32;
+    const year = 2026, month = 2, day = 5, hour = 9, minute = 32;
     const pad = (n) => n.toString().padStart(2, '0'); 
     const dateString = `${year}-${pad(month)}-${pad(day)}T${pad(hour)}:${pad(minute)}:00+02:00`;
     const endDate = new Date(dateString);
