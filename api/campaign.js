@@ -3,7 +3,7 @@ const axios = require('axios');
 module.exports = async (req, res) => {
   try {
     const campaignId = process.env.CAMPAIGN_ID;
-    const url = `https://www.liveraiser.co.il/api/getcampaigndetails?campaign_id=${campaignId}aaa`;
+    const url = `https://www.liveraiser.co.il/api/getcampaigndetails8888?campaign_id=${campaignId}`;
 
     const response = await axios.get(url);
     const data = response.data;
