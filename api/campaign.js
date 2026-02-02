@@ -26,13 +26,22 @@ module.exports = async (req, res) => {
     let message = isCampaignActive ? "f-000" : "f-017";
 
     // --- 2. דיווח נתונים (תמיד מושמע) ---
-    // אחוזים (001) -> סכום (002) -> תורמים (003)
     message += `.n-${percent}.f-001.n-${totalIncome}.f-002.n-${donors}.f-003`;
 
-    // --- 3. הודעת עידוד אחוזים (רק אם פעיל ומתחת ל-100%) ---
+    // --- 3. הודעת עידוד רנדומלית (רק אם פעיל ומתחת ל-100%) ---
     if (isCampaignActive && totalIncome < goal) {
-        if (percent >= 87) message += ".f-011"; // גיוואלד
-        else if (percent >= 80) message += ".f-010"; // קרובים ליעד
+        if (percent >= 87) {
+            // רנדומלי לישורת האחרונה: 011, 019, 020, 021
+            const randomGevald = ["011", "019", "020", "021"];
+            const chosen = randomGevald[Math.floor(Math.random() * randomGevald.length)];
+            message += `.f-${chosen}`;
+        } 
+        else if (percent >= 80) {
+            // רנדומלי לטווח ה-80%: 010 (קרובים) או 021 (אישי)
+            const random80 = ["010", "021"];
+            const chosen80 = random80[Math.floor(Math.random() * random80.length)];
+            message += `.f-${chosen80}`;
+        }
     }
 
     // --- 4. חישוב יתרה או הצלחה ---
@@ -40,28 +49,23 @@ module.exports = async (req, res) => {
         message += ".f-009"; // ברוך השם עברנו את היעד
     } else if (isCampaignActive) {
         const missingAmount = goal - totalIncome;
-        // נשארו עוד (015) -> X שקלים -> ליעד הסופי (004)
         message += `.f-015.n-${missingAmount}.f-004`;
     }
 
     // --- 5. זמן וסיום ---
     if (isCampaignActive) {
-        // מילת קישור לזמן (016)
         message += ".f-016";
         
-        // עידוד זמן דחוף
         if (diffInHours <= 5) message += ".f-014";
         else if (diffInHours <= 24) message += ".f-013";
         else if (diffInHours <= 48) message += ".f-012";
 
-        // פירוט הטיימר (005-008)
         const totalMin = Math.floor(diffInMs / 60000);
         const days = Math.floor(totalMin / 1440);
         const hours = Math.floor((totalMin % 1440) / 60);
         const minutes = totalMin % 60;
         message += `.n-${days}.f-005.n-${hours}.f-006.f-007.n-${minutes}.f-008`;
     } else {
-        // סגיר חגיגי אם הקמפיין נגמר (018)
         message += ".f-018";
     }
 
