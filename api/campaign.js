@@ -3,13 +3,13 @@ const axios = require('axios');
 module.exports = async (req, res) => {
   try {
     const campaignId = process.env.CAMPAIGN_ID;
-    const url = `https://www.liveraiser.co.il/api/getcampaigndetails?campaign_id=${campaignId}`;
+    const url = `https://www.liveraiser.co.il/api/getcampaigndetails?campaign_id=${campaignId}aaa`;
 
     const response = await axios.get(url);
     const data = response.data;
     
     const goal = data.goal || 1000000;
-    const totalIncome = 1100000 //Math.floor(parseFloat(data.totalincome)) || 0;
+    const totalIncome = Math.floor(parseFloat(data.totalincome)) || 0;
     const donors = data.donorscount || 0;
     const percent = Math.floor((totalIncome / goal) * 100);
 
