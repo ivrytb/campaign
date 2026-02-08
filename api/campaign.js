@@ -14,7 +14,7 @@ module.exports = async (req, res) => {
     const percent = Math.floor((totalIncome / goal) * 100);
 
     // הגדרות זמן סיום
-    const year = 2026, month = 2, day = 8, hour = 9, minute = 32;
+    const year = 2026, month = 2, day = 8, hour = 23, minute = 59;
     const pad = (n) => n.toString().padStart(2, '0'); 
     const dateString = `${year}-${pad(month)}-${pad(day)}T${pad(hour)}:${pad(minute)}:00+02:00`;
     const endDate = new Date(dateString);
